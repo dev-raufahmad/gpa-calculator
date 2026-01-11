@@ -1,15 +1,22 @@
 import React from "react";
-
+import { useContext } from "react";
+import { MyContext } from "../StateManagement/MyContext";
 export const AddMore = ({props}) => {
-    const [totalMarks, setTotalMarks] = React.useState(0);
-    const [obtainedMarks, setObtainedMarks] = React.useState(0);
 
+    const MyFunction = (obtainedMarks,totalMarks) => {
+        if(props.isQuiz){
+            updateQuiz(props.id,obtainedMarks,totalMarks);
+        }else{
+            updateAssignment(props.id,obtainedMarks,totalMarks);
+        }
+    }
+
+    const {updateQuiz,updateAssignment} = useContext(MyContext);
     return (
         <div>
-            <input type="number" placeholder="Enter total marks " value={totalMarks} onChange={(e) => setTotalMarks(e.target.value)}/>
-            <input type="number" placeholder="Enter obtained marks " value={obtainedMarks} onChange={(e) => setObtainedMarks(e.target.value)}/>
+            <input type="number" placeholder="Enter total marks " value={props.totalMarks} onChange={(e) => MyFunction(props.obtainedMarks,e.target.value)}/>
+            <input type="number" placeholder="Enter obtained marks " value={props.obtainedMarks} onChange={(e) => MyFunction(e.target.value,props.totalMarks)}/>
         </div>
     );
 };
-
 export default AddMore;
