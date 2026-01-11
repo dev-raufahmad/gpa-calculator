@@ -4,14 +4,17 @@ import { MyContext } from "../StateManagement/MyContext";
 export const AddMore = ({props}) => {
 
     const MyFunction = (obtainedMarks,totalMarks) => {
-        if(props.isQuiz){
+        if(props.isQuiz==1){
             updateQuiz(props.id,obtainedMarks,totalMarks);
-        }else{
+        }else if(props.isQuiz ==3){
+            updateLabAssignment(props.id,obtainedMarks,totalMarks);
+        }
+        else{
             updateAssignment(props.id,obtainedMarks,totalMarks);
         }
     }
 
-    const {updateQuiz,updateAssignment} = useContext(MyContext);
+    const {updateQuiz,updateAssignment,updateLabAssignment} = useContext(MyContext);
     return (
         <div>
             <input type="number" placeholder="Enter total marks " value={props.totalMarks} onChange={(e) => MyFunction(props.obtainedMarks,e.target.value)}/>

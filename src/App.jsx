@@ -98,7 +98,7 @@ function App() {
       {/* Here is the start of the quizes Marks */}
       <div>
         <h1>Quiz Marks</h1>
-        <button onClick={() => clicking(quizMarks, setQuizMarks , true)}>Add More</button>
+        <button onClick={() => clicking(quizMarks, setQuizMarks , true)}>Add Quiz</button>
         {
           quizMarks.map((e) => (
             <MyContext.Provider key={e.id} value={{ updateQuiz }}>
@@ -112,7 +112,7 @@ function App() {
       {/* Here is the start of the Assignent Marks */}
       <div>
         <h1>Assignment Marks</h1>
-        <button onClick={() => clicking(assignment, setAssignment , false)}>Add Another Assignment</button>
+        <button onClick={() => clicking(assignment, setAssignment , false)}>Add Assignment</button>
         {
           assignment.map((e) => (
             <MyContext.Provider key={e.id} value={{ updateAssignment }}>
@@ -126,20 +126,17 @@ function App() {
       </div>
       {/* Here is the start of the Midterm Marks */}
       <div>
-        <h1>Enter your MidTermMarks Here</h1>
+        <h3>MidTermMarks Here</h3>
         <input type="number" value={midTermTotal} onChange={(e) => setMidTermTotal(e.target.value)} placeholder="Total Marks" />
         <input type="number" value={midterm} onChange={(e) => setMidterm(e.target.value)} placeholder="Obtained Marks" />
       </div>
       {/* Here is the start of the Finalterm Marks */}
       <div>
-        <h1>Enter your FinalTermMarks Here</h1>
+        <h3>FinalTermMarks Here</h3>
         <input type="number" value={finalTermTotal} onChange={(e) => setFinalTermTotal(e.target.value)} placeholder="Total Marks" />
         <input type="number" value={finalterm} onChange={(e) => setFinalterm(e.target.value)} placeholder="Obtained Marks" />
       </div>
-      {/* Thi section is for the Lab */}
-      <div>
-        {hasLab && <Lab/>}
-      </div>
+      
       <div>
         Your Marks till now is : {calculating()}
       </div>
@@ -149,6 +146,10 @@ function App() {
       </div>
       <div>
         THe value of the assignemt marks is : {marksCalculator(assignment, 10)}
+      </div>
+      {/* Thi section is for the Lab */}
+      <div>
+        {hasLab && <Lab/>}
       </div>
     </>
   )
