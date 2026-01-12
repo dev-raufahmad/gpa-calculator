@@ -1,16 +1,35 @@
-import React, { useState } from "react";
+import React, { useContext ,useEffect , useState } from "react";
 import { MyContext } from "../StateManagement/MyContext";
 import AddMore from "./AddMore";
 import { CalculateMarks } from "../Utils/CalculateMarks";
-
 import { CalculateLabMarks } from "../Utils/CalculateLabMarks";
 export const Lab =() => {
+
+    const {setLabMarks} = useContext(MyContext);
+
 
     const [midMarks,setMidMarks] = useState(0);
     const [finalMarks,setFInalMarks] = useState(0);
     const [midTotalMarks,setMidTotalMarks] = useState(0);
     const [finalTotalMarks,setFInalTotalMarks] = useState(0);
     const [assignemnts , setAssignment] = useState([]);
+
+
+
+const result = CalculateLabMarks(
+  assignemnts,
+  25,
+  midMarks,
+  midTotalMarks,
+  finalMarks,
+  finalTotalMarks
+);
+
+
+useEffect(() => {
+  setLabMarks(result);
+}, [result]);
+
 
 const updateLabAssignment = (id, obtainedMarks, totalMarks) => {
   setAssignment(assignemnts.map((e) =>
@@ -69,7 +88,8 @@ const updateLabAssignment = (id, obtainedMarks, totalMarks) => {
                 The marks from the Assignments of the Lab are : {CalculateMarks(assignemnts , 25)}
             </div>
             <div>
-                The total Lab Marks are : {CalculateLabMarks(assignemnts , 25 , midMarks , midTotalMarks , finalMarks , finalTotalMarks)}
+                {/* The total Lab Marks are : {CalculateLabMarks(assignemnts , 25 , midMarks , midTotalMarks , finalMarks , finalTotalMarks)} */}
+                The total Marks of the are : {result}
             </div>
         </>
     )

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react"
+import React, { useState } from "react"
 import AddMore from "./Component/AddMore"
 import { MyContext } from "./StateManagement/MyContext";
 import { Lab } from "./Component/Lab";
@@ -43,6 +43,9 @@ function App() {
   const [title , setTitle] = useState("");
   const [creditHours , setCreditHours] = useState();
   const [hasLab, setHasLab] = useState(false);
+
+
+  const [labMarks , setLabMarks] = useState(0);
 
 
   const marksCalculator = (input, number) => {
@@ -149,7 +152,12 @@ function App() {
       </div>
       {/* Thi section is for the Lab */}
       <div>
-        {hasLab && <Lab/>}
+        <MyContext.Provider value={{setLabMarks}}>
+          {hasLab && <Lab/>}
+        </MyContext.Provider>
+      </div>
+      <div>
+        Here is the print of the lab marks on the bases of the app component : {labMarks}
       </div>
     </>
   )
