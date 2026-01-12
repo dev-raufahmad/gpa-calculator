@@ -1,8 +1,10 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import AddMore from "./Component/AddMore"
 import { MyContext } from "./StateManagement/MyContext";
 import { Lab } from "./Component/Lab";
 import { OverAllGPACalculator } from "./Utils/OverAllGPACalculator";
+import { useContext } from "react";
+import { CalculateMarks } from "./Utils/CalculateMarks";
 
 const clicking = (quizMarks, setQuizMarks,isQuiz) => {
   if (quizMarks.length == 4) {
@@ -19,7 +21,7 @@ const clicking = (quizMarks, setQuizMarks,isQuiz) => {
 
 
 // Here is the start of the main APP function
-function App() {
+function App({prop}) {
 
 
 
@@ -33,71 +35,106 @@ function App() {
     setQuizMarksInput(quizMarksInput.filter((e) => e.id != id)
     );
   }
+
+  const {updateGPA , updateCreditHours ,updateTitle} = useContext(MyContext);
+
+
   const [quizMarks, setQuizMarks] = React.useState([]);
   const [assignment, setAssignment] = useState([]);
 
-  const [midterm, setMidterm] = useState();
-  const [midTermTotal, setMidTermTotal] = useState();
-  const [finalterm, setFinalterm] = useState();
-  const [finalTermTotal, setFinalTermTotal] = useState();
-
-  const [title , setTitle] = useState("");
-  const [creditHours , setCreditHours] = useState();
+  const [midterm, setMidterm] = useState(0);
+  const [midTermTotal, setMidTermTotal] = useState(0);
+  const [finalterm, setFinalterm] = useState(0);
+  const [finalTermTotal, setFinalTermTotal] = useState(0);
   const [hasLab, setHasLab] = useState(false);
-
+  const [title , setTitle] = useState("");
+  const [totalMarks, setTotalMarks] = useState(0);
 
   const [labMarks , setLabMarks] = useState(0);
 
 
-  const marksCalculator = (input, number) => {
-    let totalObtained = Number(0);
-    let totalMarks = Number(0);
-    input.forEach((e) => {
-      totalObtained += Number(e.obtainedMarks);
-      totalMarks += Number(e.totalMarks);
-    })
-    if (totalMarks === 0) return 0;
-    console.log("The marks from the quizes are : " + ((totalObtained / totalMarks) * number));
-    return (totalObtained / totalMarks) * number;
-  };
+  // const marksCalculator = (input, number) => {
+  //   let totalObtained = Number(0);
+  //   let totalMarks = Number(0);
+  //   input.forEach((e) => {
+  //     totalObtained += Number(e.obtainedMarks);
+  //     totalMarks += Number(e.totalMarks);
+  //   })
+  //   if (totalMarks === 0) return 0;
+  //   console.log("The marks from the quizes are : " + ((totalObtained / totalMarks) * number));
+  //   return (totalObtained / totalMarks) * number;
+  // };
 
   const updateAssignment = (id, obtainedMarks, totalMarks) => {
     setAssignment(assignment.map((e) => {
       return e.id === id ? { ...e, obtainedMarks: obtainedMarks, totalMarks: totalMarks } : e;
     }))
   }
-  const calculating = () => {
-    const midObt = Number(midterm);
-    const midTot = Number(midTermTotal);
-    const finObt = Number(finalterm);
-    const finTot = Number(finalTermTotal);
+  // const calculating = () => {
+  //   const midObt = Number(midterm);
+  //   const midTot = Number(midTermTotal);
+  //   const finObt = Number(finalterm);
+  //   const finTot = Number(finalTermTotal);
 
-    const mid = midTot > 0 ? (midObt / midTot) * 25 : 0;
-    const final = finTot > 0 ? (finObt / finTot) * 50 : 0;
+  //   const mid = midTot > 0 ? (midObt / midTot) * 25 : 0;
+  //   const final = finTot > 0 ? (finObt / finTot) * 50 : 0;
+  //   updateGPA(prop.id , OverAllGPACalculator(mid + final + marksCalculator(assignment , 10) + marksCalculator(quizMarks , 15) , prop.creditHours , hasLab ? labMarks : -1));
+  //   return mid + final + marksCalculator(assignment , 10) + marksCalculator(quizMarks , 15);
+  // }
 
-    return mid + final + marksCalculator(assignment , 10) + marksCalculator(quizMarks , 15);
-  }
+
+    useEffect(() => {
+    const mid = midTermTotal > 0 ? (midterm / midTermTotal) * 25 : 0;
+    const fin = finalTermTotal > 0 ? (finalterm / finalTermTotal) * 50 : 0;
+
+    const total =
+      mid +
+      fin +
+      CalculateMarks(quizMarks, 15) +
+      CalculateMarks(assignment, 10);
+
+    setTotalMarks(total);
+
+    updateGPA(
+      prop.id,
+      OverAllGPACalculator(
+        total,
+        prop.creditHours,
+        hasLab ? labMarks : -1
+      )
+    );
+  }, [
+    midterm,
+    midTermTotal,
+    finalterm,
+    finalTermTotal,
+    quizMarks,
+    assignment,
+    labMarks,
+    hasLab,
+    prop.creditHours
+  ]);
 
 
   return (
     <>
       <div>
-        <h1>{title} {creditHours}</h1>
+        <h1>{prop.title} {prop.creditHours}</h1>
       </div>
       <div>
         {/* This div for the labeling of the Subject */}
         <div>
             <label htmlFor="labeling">Subject Name</label>
-            <input id="labeling" type="text" value={title} onChange={(e) =>setTitle(e.target.value)} placeholder="Name of Subject here"/>
+            <input id="labeling" type="text" value={prop.title} onChange={(e) =>updateTitle(prop.id , e.target.value)} placeholder="Name of Subject here"/>
         </div>
         {/* This div is for the Credit hours of the course */}
         <div>
           <label htmlFor="creditHours">Credit Hours</label>
-          <input type="number" value={creditHours} onChange={(e) => setCreditHours(e.target.value)} id="creditHours" />
+          <input type="number" value={prop.creditHours} onChange={(e) => updateCreditHours(prop.id , e.target.value)} id="creditHours" />
         </div>
-        {/* This div is for the Has-Lab property */}
-        <label htmlFor="hasLab">Has Lab</label>
-        <input type="checkbox" value={hasLab} onChange={() => setHasLab(!hasLab)} />
+          {/* This div is for the Has-Lab property */}
+          <label htmlFor="hasLab">Has Lab</label>
+          <input type="checkbox" checked={hasLab} onChange={(e) => setHasLab(e.target.checked)} />
       </div>
       {/* Here is the start of the quizes Marks */}
       <div>
@@ -142,14 +179,14 @@ function App() {
       </div>
       
       <div>
-        Your Marks till now is : {calculating()}
+        {/* Your Marks till now is : {calculating()} */}
       </div>
 
       <div>
-        THe value of the quiz marks is : {marksCalculator(quizMarks, 15)}
+        THe value of the quiz marks is : {CalculateMarks(quizMarks, 15)}
       </div>
       <div>
-        THe value of the assignemt marks is : {marksCalculator(assignment, 10)}
+        THe value of the assignemt marks is : {CalculateMarks(assignment, 10)}
       </div>
       {/* Thi section is for the Lab */}
       <div>
@@ -161,7 +198,7 @@ function App() {
         Here is the print of the lab marks on the bases of the app component : {labMarks}
       </div>
       <div>
-        OverAll GPA is : {OverAllGPACalculator(calculating() , creditHours , hasLab ? labMarks : -1)}
+        OverAll GPA is : {prop.GPA}
       </div>
     </>
   )
