@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import AddMore from "./Component/AddMore"
 import { MyContext } from "./StateManagement/MyContext";
 import { Lab } from "./Component/Lab";
+import { OverAllGPACalculator } from "./Utils/OverAllGPACalculator";
 
 const clicking = (quizMarks, setQuizMarks,isQuiz) => {
   if (quizMarks.length == 4) {
@@ -158,6 +159,9 @@ function App() {
       </div>
       <div>
         Here is the print of the lab marks on the bases of the app component : {labMarks}
+      </div>
+      <div>
+        OverAll GPA is : {OverAllGPACalculator(calculating() , creditHours , hasLab ? labMarks : -1)}
       </div>
     </>
   )
