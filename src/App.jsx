@@ -19,8 +19,6 @@ const clicking = (quizMarks, setQuizMarks,isQuiz) => {
 
 }
 
-
-// Here is the start of the main APP function
 function App({prop}) {
 
 
@@ -47,40 +45,17 @@ function App({prop}) {
   const [finalterm, setFinalterm] = useState(0);
   const [finalTermTotal, setFinalTermTotal] = useState(0);
   const [hasLab, setHasLab] = useState(false);
-  const [title , setTitle] = useState("");
   const [totalMarks, setTotalMarks] = useState(0);
 
   const [labMarks , setLabMarks] = useState(0);
 
 
-  // const marksCalculator = (input, number) => {
-  //   let totalObtained = Number(0);
-  //   let totalMarks = Number(0);
-  //   input.forEach((e) => {
-  //     totalObtained += Number(e.obtainedMarks);
-  //     totalMarks += Number(e.totalMarks);
-  //   })
-  //   if (totalMarks === 0) return 0;
-  //   console.log("The marks from the quizes are : " + ((totalObtained / totalMarks) * number));
-  //   return (totalObtained / totalMarks) * number;
-  // };
 
   const updateAssignment = (id, obtainedMarks, totalMarks) => {
     setAssignment(assignment.map((e) => {
       return e.id === id ? { ...e, obtainedMarks: obtainedMarks, totalMarks: totalMarks } : e;
     }))
   }
-  // const calculating = () => {
-  //   const midObt = Number(midterm);
-  //   const midTot = Number(midTermTotal);
-  //   const finObt = Number(finalterm);
-  //   const finTot = Number(finalTermTotal);
-
-  //   const mid = midTot > 0 ? (midObt / midTot) * 25 : 0;
-  //   const final = finTot > 0 ? (finObt / finTot) * 50 : 0;
-  //   updateGPA(prop.id , OverAllGPACalculator(mid + final + marksCalculator(assignment , 10) + marksCalculator(quizMarks , 15) , prop.creditHours , hasLab ? labMarks : -1));
-  //   return mid + final + marksCalculator(assignment , 10) + marksCalculator(quizMarks , 15);
-  // }
 
 
     useEffect(() => {
