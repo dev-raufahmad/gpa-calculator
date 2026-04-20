@@ -52,6 +52,7 @@ const updateLabAssignment = (id, obtainedMarks, totalMarks) => {
 
     return(
         <>
+            <span></span>
             <h2>Lab Marks</h2>
             {/* This div id for adding the new assignment */}
             <div>
