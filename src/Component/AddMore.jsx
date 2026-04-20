@@ -16,7 +16,7 @@ export const AddMore = ({props}) => {
 
     const {updateQuiz,updateAssignment,updateLabAssignment} = useContext(MyContext);
     return (
-        <div>
+        <div className="flex flex-row w-full h-20 justify-evenly" >
             <input type="number" placeholder="Enter total marks " value={props.totalMarks} onChange={(e) => MyFunction(props.obtainedMarks,e.target.value)}/>
             <input type="number" placeholder="Enter obtained marks " value={props.obtainedMarks} onChange={(e) => MyFunction(e.target.value,props.totalMarks)}/>
         </div>
